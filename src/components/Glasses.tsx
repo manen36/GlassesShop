@@ -1,6 +1,13 @@
-export default function Glasses({glasses, addToCar}) {
+import type { Glasses } from '../types' 
 
-    const {id, name, image, description, price} = glasses
+type GlassesProps = {
+    glasses : Glasses, 
+    addToCar : (item: Glasses) => void
+}
+
+export default function Glasses({glasses, addToCar} : GlassesProps) {
+
+    const {name, image, description, price} = glasses
     
     return(
         <div className="col-md-6 col-lg-4 my-4 row flex-column align-items-center">

@@ -1,4 +1,24 @@
-export default function Header({car, removeFromCar, decreaseQuantity, increaseQuantity, clearCar, isEmpty, carTotal}) {    
+import type { CarItem, Glasses } from "../types"
+
+type HeaderProps  = {  //function signature
+    car : CarItem[]
+    removeFromCar : (id : Glasses['id']) => void
+    decreaseQuantity : (id : Glasses['id']) => void
+    increaseQuantity : (id : Glasses['id']) => void
+    clearCar : () => void
+    isEmpty : boolean
+    carTotal : number
+}
+
+export default function Header({
+    car, 
+    removeFromCar, 
+    decreaseQuantity, 
+    increaseQuantity, 
+    clearCar, 
+    isEmpty, 
+    carTotal
+} : HeaderProps ) {    
 
     return (
         <header className="py-5 header">

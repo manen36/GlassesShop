@@ -1,9 +1,10 @@
 import {useState, useEffect, useMemo} from 'react'
 import { db } from '../data/db'
+import type { Glasses, CarItem } from '../types' 
 
 export const useCar = () => {
     
-    const initialCar = () => {
+    const initialCar = () : CarItem[] => {
         const localStorageCar = localStorage.getItem('car')
         return localStorageCar ? JSON.parse(localStorageCar) : []    
     }
@@ -18,7 +19,7 @@ export const useCar = () => {
     localStorage.setItem('car', JSON.stringify(car))
     }, [car])
     
-    function addToCar(item) {
+    function addToCar(item : Glasses) {
     const itemExists = car.findIndex(guitar => guitar.id === item.id)
     if(itemExists >= 0) { // existe en el carrito
         if(car[itemExists].quantity >= MAX_ITEMS) return
@@ -26,16 +27,16 @@ export const useCar = () => {
         updateCar[itemExists].quantity++ 
         setCar(updateCar)
     } else {
-        item.quantity = 1
-        setCar([...car, item])
+        const newItem : CarItem = {...item, quantity : 1 }
+        setCar([...car, newItem])
     }
     }
     
-    function removeFromCar(id){
+    function removeFromCar(id : Glasses['id']){
     setCar(prevCar => prevCar.filter(glasses => glasses.id !== id) )
     }
     
-    function decreaseQuantity(id) {
+    function decreaseQuantity(id : Glasses['id']) {
     const updateCar = car.map( item => {
         if(item.id === id && item.quantity > MIN_ITEMS) {
         return {
@@ -48,7 +49,7 @@ export const useCar = () => {
     setCar(updateCar)
     }
     
-    function increaseQuantity(id) {
+    function increaseQuantity(id : Glasses['id']) {
     const updateCar = car.map( item => {
         if(item.id === id && item.quantity < MAX_ITEMS) {
         return {

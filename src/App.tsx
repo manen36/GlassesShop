@@ -1,4 +1,4 @@
-import Glasses from "./components/glasses"
+import Glasses from "./components/Glasses"
 import Header from "./components/Header"
 import { useCar } from './hooks/useCar'
 
