@@ -20,7 +20,7 @@ export const useCar = () => {
     }, [car])
     
     function addToCar(item : Glasses) {
-    const itemExists = car.findIndex(guitar => guitar.id === item.id)
+    const itemExists = car.findIndex(glasses => glasses.id === item.id)
     if(itemExists >= 0) { // existe en el carrito
         if(car[itemExists].quantity >= MAX_ITEMS) return
         const updateCar = [...car]
