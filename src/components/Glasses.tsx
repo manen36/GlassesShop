@@ -1,11 +1,13 @@
+import type { ActionDispatch } from 'react'
 import type { Glasses } from '../types' 
+import type { CarActions } from '../reducers/car-reducer'
 
 type GlassesProps = {
     glasses : Glasses, 
-    addToCar : (item: Glasses) => void
+    dispatch: ActionDispatch<[CarActions]>
 }
 
-export default function Glasses({glasses, addToCar} : GlassesProps) {
+export default function Glasses({glasses, dispatch} : GlassesProps) {
 
     const {name, image, description, price} = glasses
     
@@ -21,7 +23,7 @@ export default function Glasses({glasses, addToCar} : GlassesProps) {
                 <button 
                     type="button"
                     className="btn btn-dark w-100"
-                    onClick={() => addToCar(glasses) }
+                    onClick={() => dispatch({type: 'add-to-cart', payload: {item: glasses}}) }
                     >Agregar al Carrito</button>
             </div>
         </div>

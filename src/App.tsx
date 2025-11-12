@@ -1,36 +1,34 @@
+import { useReducer, useEffect } from "react"
 import Glasses from "./components/Glasses"
 import Header from "./components/Header"
-import { useCar } from './hooks/useCar'
+import { carReducer, initialState } from "./reducers/car-reducer"
 
 function App() {
 
-  const { 
-    data,car, addToCar, removeFromCar, decreaseQuantity, increaseQuantity, clearCar, isEmpty, carTotal
-  } = useCar()  
+  const [state, dispatch] = useReducer(carReducer, initialState)
 
+  useEffect(() => {
+    localStorage.setItem('car', JSON.stringify(state.car))
+  }, [state.car]) 
+        
   
   return (
     <>
       
       <Header 
-        car={car}
-        removeFromCar={removeFromCar}
-        decreaseQuantity={decreaseQuantity}
-        increaseQuantity={increaseQuantity}
-        clearCar={clearCar}
-        isEmpty={isEmpty}
-        carTotal={carTotal}
+        car={state.car}
+        dispatch={dispatch}
       />     
       
       <main className="container-xl mt-5">
           <h2 className="text-center">Nuestra Colección</h2>
 
           <div className="row mt-5">
-            {data.map((glasses) => (
+            {state.data.map((glasses) => (
                 <Glasses
                   key={glasses.id} 
                   glasses={glasses}
-                  addToCar={addToCar}
+                  dispatch={dispatch}
                 /> 
               ))}            
             

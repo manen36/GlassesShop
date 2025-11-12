@@ -1,24 +1,17 @@
-import type { CarItem, Glasses } from "../types"
+import { useMemo, type ActionDispatch } from "react"
+import type { CarItem } from "../types"
+import type { CarActions } from "../reducers/car-reducer"
 
 type HeaderProps  = {  //function signature
     car : CarItem[]
-    removeFromCar : (id : Glasses['id']) => void
-    decreaseQuantity : (id : Glasses['id']) => void
-    increaseQuantity : (id : Glasses['id']) => void
-    clearCar : () => void
-    isEmpty : boolean
-    carTotal : number
+    dispatch: ActionDispatch<[action: CarActions]>
 }
 
-export default function Header({
-    car, 
-    removeFromCar, 
-    decreaseQuantity, 
-    increaseQuantity, 
-    clearCar, 
-    isEmpty, 
-    carTotal
-} : HeaderProps ) {    
+export default function Header({car, dispatch} : HeaderProps ) {    
+
+        // State derivado
+        const isEmpty = useMemo(() => car.length === 0, [car])
+        const carTotal = useMemo(() => car.reduce((total, item) => total + (item.quantity * item.price), 0), [car])
 
     return (
         <header className="py-5 header">
@@ -67,7 +60,9 @@ export default function Header({
                                                         <button
                                                             type="button"
                                                             className="btn btn-dark" 
-                                                            onClick={() => decreaseQuantity(glasses.id)}                                                                                                                       
+                                                            onClick={() => dispatch({type: 'decrease-quantity',
+                                                                payload: {id: glasses.id}
+                                                            })}                                                                                                                       
                                                         >
                                                             -
                                                         </button>
@@ -75,7 +70,9 @@ export default function Header({
                                                         <button
                                                             type="button"
                                                             className="btn btn-dark"
-                                                            onClick={() => increaseQuantity(glasses.id)}
+                                                            onClick={() => dispatch({type: 'increase-quantity',
+                                                                payload: {id: glasses.id}
+                                                            })}
                                                         >
                                                             +
                                                         </button>
@@ -84,7 +81,9 @@ export default function Header({
                                                         <button
                                                             className="btn btn-danger"
                                                             type="button"
-                                                            onClick={() => removeFromCar(glasses.id)}
+                                                            onClick={() => dispatch({type: 'remove-from-cart',
+                                                                payload: {id: glasses.id}
+                                                            })}
                                                         >
                                                             X
                                                         </button>
@@ -97,7 +96,7 @@ export default function Header({
                                     <p className="text-end">Total pagar: <span className="fw-bold">${carTotal}</span></p>
                                     <button 
                                         className="btn btn-dark w-100 mt-3 p-2"
-                                        onClick={clearCar}
+                                        onClick={() => dispatch({type: 'clear-cart'})}
                                     >Vaciar Carrito</button>
                                 </>
                                 )}                         
